@@ -5,12 +5,36 @@ date: "18 de janeiro de 2016"
 output: html_document
 ---
 ```{r}
+moedas <- function(p){
+  runif(1) > p
+}
+moedas(0.5)
+
 moeda <- function(n,p){
   x <- runif(n)
-    x < p
+  ifelse(x < p,1,0)
 }
-
 moeda(2,0.5)
+
+
+proporcao <- function(resultados){
+    sum(resultados)/length(resultados)
+}
+proporcao(c(1,0,0,0,0,1,1,1,0))
+
+
+simulacao <- function(k,n,p){
+  vet = integer(length = k)
+  for (i in 1:k) {
+  vet[i]<- moeda(n,p) %>%  proporcao()
+  }
+  vet
+}
+simulacao(3,3,0.5)
+
+
+
+
 
 
 
