@@ -1,0 +1,27 @@
+library(readr)
+rds <- read_rds("C:\\Users\\adm\\Downloads\\dados\\pnud_rds.rds")
+summary(rds[,1:10])
+
+txt <- 'C:\\Users\\adm\\Downloads\\dados\\pnud_txt.txt'
+ler_txt <- read.table(file = txt)
+summary(ler_txt[,1:10])
+
+rda <- 'C:\\Users\\adm\\Downloads\\dados\\pnud_rda.rda'
+load(rda)
+summary(d[,1:10])
+
+install.packages("openxlsx")
+install.packages("readxl")
+library(openxlsx)
+
+ler_xlsx <- read.xlsx("C:\\Users\\adm\\Downloads\\dados\\pnud_xlsx.xlsx")
+summary(ler_xlsx[,1:10])
+
+install.packages("dplyr")
+library(dplyr)
+sql_lite <- 'C:\\Users\\adm\\Downloads\\dados\\pnud_sqlite.sqlite'
+ler_sql_lite <- src_sqlite(sql_lite) %>% tbl("Pnud")
+
+csv <- 'C:\\Users\\adm\\Downloads\\dados\\pnud2_csv.csv'
+ler_csv <- read.table(file = csv, header = TRUE, sep = ";")
+summary(ler_csv[,1:10])
