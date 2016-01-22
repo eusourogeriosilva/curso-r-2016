@@ -1,0 +1,123 @@
+---
+title: "Relatorio03"
+author: "Curso R de verão 2016"
+date: "22 de janeiro de 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+library(dplyr)
+data(pnud_muni, package = 'abjutils')
+x <- pnud_muni %>% tbl_df %>% select(municipio,uf,ano, gini, contains('idhm'))
+summary(x)
+
+pnud_muni %>% tbl_df %>% select(ano, ufn, municipio, idhm) %>% 
+  filter(ufn=='São Paulo')
+
+pnud_muni %>% tbl_df %>% select(ano, uf, municipio, gini, contains('idh')) %>% 
+  filter(ano == 2010, gini > 0.5 | idhm > 0.7)
+
+pnud_muni %>% tbl_df %>% select(ano, ufn) %>% 
+  filter(ano %in% c(2010,2011), ufn == 'Pará')
+
+pnud_muni %>% tbl_df %>% select(ano, uf, municipio, gini, contains('idh')) %>% 
+  filter(ano == 2010) %>% 
+    mutate(idhm2 = idhm * 100)
+           
+pnud_muni %>% select(municipio, idhm, ano) %>% 
+  filter(ano == 2010) %>% 
+arrange(idhm) %>% head(10)
+
+pnud_muni %>% summarise(media = mean(idhm), dp = sd(idhm))
+
+pnud_muni %>% group_by(ano, ufn) %>%  summarise(media = mean(idhm), dp = sd(idhm)) %>% mutate(dp = ifelse(is.nan(dp),0,dp))
+
+pnud_muni %>% group_by(ano) %>%  summarise(media = mean(idhm), dp = sd(idhm), n_obs = n(), n_distinct(ufn)) 
+
+pnud_muni %>% group_by(ano) %>%  mutate(n_obs = n()) %>% select(ano, n_obs)
+
+pnud_muni %>%
+  filter(ano == 2010) %>% 
+  count(ufn)
+
+
+pnud_muni %>% filter(ano == 2000) %>% group_by(ufn) %>% summarise(ex = sum(espvida*popt)/sum(popt)) %>%  select(ufn,ex) %>% arrange(desc(ex)) %>% print(n=100)
+
+
+
+#-----------------------------------------------------------------
+#-----------------------------------------------------------------
+#-----------------------------------------------------------------
+#-----------------------------------------------------------------
+
+
+library(tidyr)
+pnud_muni %>%
+  group_by(ano, ufn) %>%
+  summarise(populacao = sum(popt)) %>%
+  ungroup() %>%
+  spread(ano, populacao) %>% 
+  print(n=100)
+
+
+pnud_muni %>%
+  filter(ano == 2010) %>%
+  select(ufn, municipio, starts_with('idhm_')) %>%
+  gather(tipo_idh, idh, starts_with('idhm_'))%>% 
+  tbl_df()
+
+unite()
+separate()
+inner_join()
+left_join()
+distinct()
+anti_join()
+do
+
+
+outros pacotes
+stringr::  #arquivos String
+lubridate::  #arquivos Data
+rvest #arquivos HTML
+
+
+install.packages('nycflights13')
+library(nycflights13)
+
+flights %>% tbl_df()
+
+flights %>% filter(year == 2013, month == 1)
+flights %>% filter(year == 2013, month == 1 | month == 2)
+flights %>% filter(distance > 1000)
+
+flights %>% select(month, dep_delay)
+flights %>% select(mes = month, atrado = dep_delay)
+flights %>% select(-tailnum, -origin, -dest)
+
+flights %>% mutate(ganho_de_tempo = dep_delay - arr_delay, velocidade = (distance/air_time)*60) %>% select(ganho_de_tempo, velocidade)
+
+flights %>% mutate(hour2 = round((hour*60 + minute + air_time)/60),0) %>% select(hour2)
+  
+?flights
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
